@@ -47,7 +47,11 @@ const store = useStore()
 function handleSubmit() {
   userForm.value.validate((valid) => {
     if(valid) {
-      api.login(user).then((res) => {
+      const params = {
+        userName: user.userName,
+        userPwd: user.userPwd
+      }
+      api.login(params).then((res) => {
         store.commit('saveUserInfo', res)
         router.push('/welcome')
       })

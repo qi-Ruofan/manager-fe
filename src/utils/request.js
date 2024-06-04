@@ -19,6 +19,7 @@ service.interceptors.request.use((req) => {
   // 统一添加token
   const headers = req.headers
   if(!headers.Authorization) headers.Authorization = 'Bear Jack'
+  req.body = req.data
   // 转化参数 如：时间戳
   return req
 })
@@ -29,7 +30,7 @@ service.interceptors.response.use((res) => {
   // 返回状态码判断
   if(code === 200) {
     return data
-  } else if(code === 40001) { //登录失效
+  } else if(code === 500001) { //登录失效
     ElMessage.error(TOKEN_INVALID)
     setTimeout(() => {
       router.push('/login')
@@ -37,6 +38,7 @@ service.interceptors.response.use((res) => {
     return Promise.reject(TOKEN_INVALID)
   } else {
     ElMessage.error(msg || NETWORK_ERROR)
+    return Promise.reject(msg || NETWORK_ERROR)
   }
 })
 
@@ -62,7 +64,6 @@ function request(options) {
   } else {
     service.defaults.baseURL = config.mock ? config.mockApi : config.baseApi
   }
-
   return service(options)
 }
 
@@ -72,7 +73,7 @@ function request(options) {
       url,
       data,
       method:item,
-      options
+      ...options
     })
   }
 })

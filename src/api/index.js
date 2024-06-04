@@ -7,10 +7,23 @@ import request from "../utils/request";
 export default {
   login(params, options) {
     return request({
-      url: '/user/login',
+      url: '/users/login',
       data: params,
       method: 'post',
-      mock: true
+    })
+  },
+  getMenuList(params, options) {
+    return request({
+      url: '/users/getPermissionList',
+      data: params,
+      method: 'post',
+    })
+  },
+  getNoticeCount(params, options) {
+    return request({
+      url: '/leave/count',
+      data: {},
+      method: 'get',
     })
   }
 }
